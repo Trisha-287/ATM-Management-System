@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class Atm {
     public static void main(String[] args){
         int pin=123;
-        int balance=1000;
+
+        int balance=2000;
         Scanner sc=new Scanner(System.in);
         System.out.print("enter your account pin number:");
         int user_pin=sc.nextInt();
