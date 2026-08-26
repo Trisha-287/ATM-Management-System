@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Atm {
     public static void main(String[] args) {
-        int pin = 111;
+        int pin = 123;
         double balance = 3000;
         Scanner sc = new Scanner(System.in);
         try {
