@@ -1,4 +1,4 @@
-package Exception;
+package Atmmanagementsystem;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
