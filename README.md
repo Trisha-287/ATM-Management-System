@@ -9,6 +9,7 @@ A basic ATM Management System developed using Java.
 - Cash Deposit
 - Change PIN
 - Transaction History
+- Fund transfer
 - Exception Handling
 
 ## Technologies Used
