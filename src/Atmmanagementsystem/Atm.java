@@ -111,8 +111,7 @@ public class Atm {
                             account.checkBalance();
                             break;
                         case 2:
-                            try {
-                                System.out.print("enter withdraw amount");
+                            try {             System.out.print("enter withdraw amount");
                                 double amount = sc.nextDouble();
                                 account.withdraw(amount);
                             } catch (IllegalArgumentException e) {
