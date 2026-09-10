@@ -1,84 +1,8 @@
-package Atmmanagementsystem;
+package atm.management.system;
 
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-class Account {
-    String name;
-    int pin;
-    double balance;
-    ArrayList<String> transactions = new ArrayList<>();
-
-    //constructor
-    Account(String name, int pin, double balance) {
-        this.name = name;
-        this.pin = pin;
-        this.balance = balance;
-    }
-
-    //checkbalance
-    public void checkBalance() {
-        System.out.println("balance amount is:" + balance);
-        transactions.add("availabla balance:" + balance);
-    }
-
-    //deposit
-    public void deposit(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("amount must be greater then 0");
-        }
-        balance += amount;
-        System.out.println("deposit successful");
-        System.out.println("updated balance:" + amount);
-    }
-
-    //withdraw
-    public void withdraw(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("amount must be greater then 0");
-        }
-        if (amount > balance) {
-            throw new ArithmeticException("insufficient balance");
-        }
-        balance -= amount;
-        System.out.println("withdraw successful");
-        System.out.println("remaining balance:" + balance);
-        transactions.add("cash withdrawal" + amount);
-    }//change pin
-
-    public void changePin(int currentPin, int newPin) {
-        if (currentPin != pin) {
-            System.out.println("incorrect pin");
-            return;
-        }
-        pin = newPin;
-        System.out.println("pin changed successfully!");
-        transactions.add("pin sucessfully changed");
-    }
-
-    //transactionhistory
-    public void showTransactions() {
-        System.out.println("tansaction history");
-        if (transactions.isEmpty()) {
-            System.out.println("no transaction found");
-        } else {
-            for (String transaction : transactions) {
-                System.out.println(transaction);
-            }
-        }
-    }//fund transfer
-
-    public void fundTransfer(long accountNumber, double amount) {
-        if (amount > balance) {
-            throw new ArithmeticException("insufficient balance");
-        }
-        balance = balance - amount;
-        transactions.add("transferred" + amount + "to account" + accountNumber);
-        System.out.println("fund transfer succesful!");
-        System.out.println("remaining balance:" + balance);
-    }
-}
 public class Atm {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -86,14 +10,32 @@ public class Atm {
         Account account = new Account("siva", 1234, 3000);
         System.out.println("atm banking system");
         //pin login
-        try {
-            System.out.print("enter your account pin:");
-            int userPin = sc.nextInt();
-            if (userPin != account.pin) {
-                System.out.println("incorrect pin");
-                return;
+        int attempts=0;
+        boolean login=false;
+        while (attempts<=3) {
+            try {
+                System.out.println("enter your account pin");
+                int user_pin = sc.nextInt();
+                if (user_pin == account.pin) {
+                    login = true;
+                    System.out.println("login successful");
+                    break;
+                } else {
+                    attempts++;
+                    System.out.println("incorrect pin");
+                    System.out.println("attempts remaining:" + (3 - attempts));
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("invalid pin enter number only");
+                sc.nextLine();
+                attempts++;
+                System.out.println("after remainig:" + (3 - attempts));
             }
-            System.out.println("login successful");
+        }if(!login) {
+            System.out.println("account blocked due to 3 wrong attempts");
+            sc.close();
+            return;
+        }
             //atm menu
             while (true) {
                 System.out.println("1.check balance");
@@ -111,7 +53,8 @@ public class Atm {
                             account.checkBalance();
                             break;
                         case 2:
-                            try {             System.out.print("enter withdraw amount");
+                            try {
+                                System.out.print("enter withdraw amount");
                                 double amount = sc.nextDouble();
                                 account.withdraw(amount);
                             } catch (IllegalArgumentException e) {
@@ -170,10 +113,8 @@ public class Atm {
                     sc.nextLine();
                 }
             }
-        } catch (InputMismatchException e) {
-            System.out.println("invalid pin please enter number only");
         }
-        sc.close();
+
     }
-}
+
 
