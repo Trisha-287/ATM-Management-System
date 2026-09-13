@@ -8,11 +8,12 @@ public class Atm {
         Scanner sc = new Scanner(System.in);
         //object creation using constructor
         Account account = new Account("siva", 1234, 3000);
+        CashManager cashManager=new CashManager();
         System.out.println("atm banking system");
         //pin login
         int attempts=0;
         boolean login=false;
-        while (attempts<=3) {
+        while (attempts<=3){
             try {
                 System.out.println("enter your account pin");
                 int user_pin = sc.nextInt();
@@ -35,8 +36,7 @@ public class Atm {
             System.out.println("account blocked due to 3 wrong attempts");
             sc.close();
             return;
-        }
-            //atm menu
+        }//atm menu
             while (true) {
                 System.out.println("1.check balance");
                 System.out.println("2.withdraw");
@@ -54,10 +54,26 @@ public class Atm {
                             break;
                         case 2:
                             try {
-                                System.out.print("enter withdraw amount");
+                                System.out.print("enter withdraw amount:");
                                 double amount = sc.nextDouble();
-                                account.withdraw(amount);
-                            } catch (IllegalArgumentException e) {
+                                if(amount!=(int)amount){
+                                    throw new IllegalArgumentException("please enter a whole number");
+                                }
+                                int withdrawAmount=(int)amount;
+                                //first check account balance
+                                account.checkwithdraw(withdrawAmount);
+                                //then dispense atm cash
+                                boolean successful= cashManager.withdraw(withdrawAmount);
+                                //dispensed cash
+                                if(successful){
+                                    account.completeWithdrawalAmount(withdrawAmount);
+                                }
+                            }
+                            catch (InputMismatchException e){
+                                System.out.println("invalid input.enter number only");
+                                sc.nextLine();
+                            }
+                            catch (IllegalArgumentException e) {
                                 System.out.println(e.getMessage());
                             } catch (ArithmeticException e) {
                                 System.out.println(e.getMessage());
@@ -65,10 +81,26 @@ public class Atm {
                             break;
                         case 3:
                             try {
-                                System.out.print("enter deposit amount");
-                                double amount = sc.nextDouble();
-                                account.deposit(amount);
-                            } catch (IllegalArgumentException e) {
+                                System.out.println("*********enter deposit amount***********");
+                                System.out.println("enter 500 notes:");
+                                int notes500= sc.nextInt();
+                                System.out.println("enter 200 notes:");
+                                int notes200= sc.nextInt();
+                                System.out.println("enter 100 notes:");
+                                int notes100= sc.nextInt();
+                                //calculate total amount
+                                double amount=(notes500*500)+(notes200*200)+(notes100*100);
+                                //add notes to atm
+                                boolean successful=cashManager.depositCash(notes500,notes200,notes100);
+                                //add amount to account
+                                if(successful){
+                                    account.deposit(amount);
+                                }
+                            }catch (InputMismatchException e){
+                                System.out.println("invalid input enter numbers only.");
+                                sc.nextLine();
+                            }
+                            catch (IllegalArgumentException e) {
                                 System.out.println(e.getMessage());
                             }
                             break;
@@ -85,6 +117,7 @@ public class Atm {
                             }
                             break;
                         case 5:
+
                             account.showTransactions();
                             break;
                         case 6:
