@@ -65,7 +65,7 @@ class Account {
     public void fundTransfer(long accountNumber, double amount) {
         if(accountNumber<=0){
             throw new IllegalArgumentException("invalid account");
-        }s
+        }
         if(amount<=0){
             throw new IllegalArgumentException("transfer amount must be greater then 0");
         }
