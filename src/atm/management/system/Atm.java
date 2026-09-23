@@ -10,7 +10,7 @@ public class Atm {
         Account account = new Account("siva", 1234, 3000);
         CashManager cashManager=new CashManager();
         System.out.println("atm banking system");
-        //pin login
+        //pin login validation
         int attempts=0;
         boolean login=false;
         while (attempts<=3){
