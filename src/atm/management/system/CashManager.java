@@ -10,7 +10,7 @@ public class CashManager {
     CashManager(){
         atmCash=(notes500*500)+(notes200*200)+(notes100*100);
     }
-    //withdrawal method
+    //withdrawal Method
     boolean withdraw(int amount){
         try{
             if(amount<=0){

@@ -8,9 +8,7 @@ public class VoiceCommandRecognizer {
         this.sc=sc;
     }
     public String ListenForCommand(){
-        System.out.println("voice command node");
-        System.out.println("say/type:withdraw,Balance,Deposit,Transfer,Exit");
-        System.out.println("command");
+        System.out.println("Command");
         String Command=sc.nextLine();
         return Command.toLowerCase().trim();
     }

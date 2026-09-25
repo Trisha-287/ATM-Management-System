@@ -1,25 +1,36 @@
 package atm.management.system;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Atm {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        //date and time
+        DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy-HH:mm:ss");
         //object creation using constructor
         Account account = new Account("siva", 1234, 3000);
         CashManager cashManager=new CashManager();
-        System.out.println("atm banking system");
+        // voive assistant
+        VoiceAssistant voiceAssistant=new VoiceAssistant();
+        //voice commnd recognizer
+        VoiceCommandRecognizer voiceCommandRecognizer=new VoiceCommandRecognizer(sc);
+        System.out.println(" **********welcome to atm ********** ");
+        System.out.println("date & time:"+ LocalDateTime.now().format(formatter));
         //pin login validation
         int attempts=0;
         boolean login=false;
-        while (attempts<=3){
+        while (attempts<3){
             try {
-                System.out.println("enter your account pin");
+                System.out.print("enter your account pin:");
                 int user_pin = sc.nextInt();
                 if (user_pin == account.pin) {
                     login = true;
                     System.out.println("login successful");
+                    System.out.println("date & time:"+ LocalDateTime.now().format(formatter));
+
                     break;
                 } else {
                     attempts++;
@@ -34,6 +45,7 @@ public class Atm {
             }
         }if(!login) {
             System.out.println("account blocked due to 3 wrong attempts");
+            System.out.println("date & time:"+ LocalDateTime.now().format(formatter));
             sc.close();
             return;
         }//atm menu
@@ -44,7 +56,8 @@ public class Atm {
                 System.out.println("4.change pin");
                 System.out.println("5.transaction");
                 System.out.println("6.fund transfer");
-                System.out.println("7.exit");
+                System.out.println("7.voice command");
+                System.out.println("8.exit");
                 System.out.println("enter your choice:");
                 try {
                     int choice = sc.nextInt();
@@ -56,13 +69,14 @@ public class Atm {
                             try {
                                 System.out.print("enter withdraw amount:");
                                 double amount = sc.nextDouble();
+
                                 if(amount!=(int)amount){
                                     throw new IllegalArgumentException("please enter a whole number");
                                 }
                                 int withdrawAmount=(int)amount;
                                 //first check account balance
-                                account.checkwithdraw(withdrawAmount);
-                                //then dispense atm cash
+                                account.CheckWithdrawal(withdrawAmount);
+                                // then dispense atm cash
                                 boolean successful= cashManager.withdraw(withdrawAmount);
                                 //dispensed cash
                                 if(successful){
@@ -135,8 +149,33 @@ public class Atm {
                             }
                             break;
                         case 7:
+                            sc.nextLine();
+                            voiceAssistant.welcomemessage();
+                            voiceAssistant.showInstructions();
+                            String command=voiceCommandRecognizer.ListenForCommand();
+                            if(command.equals("balance")){
+                                voiceAssistant.say("checking your balance.");
+                                account.checkBalance();
+                            }
+                            else if(command.equals("withdraw")){
+                                voiceAssistant.say("opening withdrawal.");
+                            }
+                            else if(command.equals("deposit")){
+                                voiceAssistant.say("opening deposit");
+                            }
+                            else if(command.equals("transfer")){
+                                voiceAssistant.say("opening fund transfer");
+                            }
+                            else{
+                                System.out.println("unknown command."+"please try again.");
+                            }
+                            break;
+
+                        case 8:
                             System.out.println("thank you");
                             System.out.println("logged out succesfully");
+                            System.out.println("date & time:"+ LocalDateTime.now().format(formatter));
+                            sc.close();
                             return;
                         default:
                             System.out.println("invalid choice please select 1 to 7");
@@ -144,6 +183,12 @@ public class Atm {
                 } catch (InputMismatchException e) {
                     System.out.println("invalid input please enter number only");
                     sc.nextLine();
+                }
+                catch (IllegalArgumentException e){
+                    System.out.println(e.getMessage());
+                }
+                catch(ArithmeticException e){
+                    System.out.println(e.getMessage());
                 }
             }
         }

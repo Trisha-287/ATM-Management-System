@@ -6,6 +6,7 @@ public class VoiceAssistant {
         System.out.println("welcome to the atm please enter you pin using the secure keypad");
     }
     public void say(String message){
+
         System.out.println("[VOICE]:"+message);
     }
     public void showInstructions(){
