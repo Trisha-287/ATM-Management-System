@@ -1,5 +1,6 @@
 package atm.management.system;
 
+import java.io.Console;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
@@ -8,7 +9,7 @@ import java.util.Scanner;
 public class Atm {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        //date and time
+        //Date and time
         DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyyy-HH:mm:ss");
         //object creation using constructor
         Account account = new Account("siva", 1234, 3000);
@@ -19,18 +20,27 @@ public class Atm {
         VoiceCommandRecognizer voiceCommandRecognizer=new VoiceCommandRecognizer(sc);
         System.out.println(" **********welcome to atm ********** ");
         System.out.println("date & time:"+ LocalDateTime.now().format(formatter));
+        Console console=System.console();
+        if(console==null){
+            System.out.println("secure pin input is not available") ;
+            System.out.println("please run the program using a terminal");
+//            sc.close();
+//            return;
+        }
         //pin login validation
         int attempts=0;
         boolean login=false;
-        while (attempts<3){
+        while(attempts<3){
+//            char[] pinChars=console.readPassword("enter your pin:");
+            System.out.println("Please enter the pin");
+            int enteredPin;
+//            String enteredPin=new String(pinChars);
             try {
-                System.out.print("enter your account pin:");
-                int user_pin = sc.nextInt();
-                if (user_pin == account.pin) {
+                int enteredpin= sc.nextInt();
+                if (enteredpin== account.pin) {
                     login = true;
                     System.out.println("login successful");
                     System.out.println("date & time:"+ LocalDateTime.now().format(formatter));
-
                     break;
                 } else {
                     attempts++;
@@ -75,7 +85,7 @@ public class Atm {
                                 }
                                 int withdrawAmount=(int)amount;
                                 //first check account balance
-                                account.CheckWithdrawal(withdrawAmount);
+                                account.checkWithdrawal(withdrawAmount);
                                 // then dispense atm cash
                                 boolean successful= cashManager.withdraw(withdrawAmount);
                                 //dispensed cash
@@ -142,8 +152,10 @@ public class Atm {
                                 double amount = sc.nextDouble();
                                 account.fundTransfer(accountNumber, amount);
                             } catch (InputMismatchException e) {
-                                System.out.println("please enter valid input");
+                                System.out.println("please enter valid numbers");
                                 sc.nextLine();
+                            }catch (IllegalArgumentException e){
+                                System.out.println(e.getMessage());
                             } catch (ArithmeticException e) {
                                 System.out.println(e.getMessage());
                             }
@@ -178,7 +190,7 @@ public class Atm {
                             sc.close();
                             return;
                         default:
-                            System.out.println("invalid choice please select 1 to 7");
+                            System.out.println("invalid choice please select 1 to 8");
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("invalid input please enter number only");

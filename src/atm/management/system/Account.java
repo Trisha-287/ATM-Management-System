@@ -8,90 +8,125 @@ class Account {
     String name;
     int pin;
     double balance;
+
     ArrayList<String> transactions = new ArrayList<>();
-    //constructor
+
+    // Constructor
     Account(String name, int pin, double balance) {
         this.name = name;
         this.pin = pin;
         this.balance = balance;
-    }//date and time
-    public String getDateTime(){
-        LocalDateTime now=LocalDateTime.now();
-        DateTimeFormatter formatter=DateTimeFormatter.ofPattern("dd-MM-yyy HH:mm:ss");
+    }
+
+    // Date and time
+    public String getDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+
         return now.format(formatter);
     }
-    //checkbalance
+
+    // Check balance
     public void checkBalance() {
-        System.out.println("balance amount is:" + balance);
-        transactions.add("availabla balance:" + balance
-                 +"|Date & Time:"+getDateTime());
-    }//deposit
+        System.out.println("Balance amount is: " + balance);
+
+        transactions.add("Available balance: " + balance
+                + " | Date & Time: " + getDateTime());
+    }
+
+    // Deposit
     public void deposit(double amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("amount must be greater then 0");
+            throw new IllegalArgumentException(
+                    "Amount must be greater than 0");
         }
         balance += amount;
-        System.out.println("deposit successful");
-        System.out.println("deposited Amount:" + amount);
-        System.out.println("updated balance:" + balance);
-        transactions.add("cash deposited:"+amount
-                 +"|Date & Time:"+getDateTime());
-    }//check withdrawal
-    public void CheckWithdrawal(int amount){
+        System.out.println("Deposit successful");
+        System.out.println("Updated balance: " + balance);
+
+        transactions.add("Deposit: ₹" + amount
+                + " | Date & Time: " + getDateTime());
+    }// complete withdrwal
+    public void completeWithdrawalAmount(int amount) {
+        checkWithdrawal(amount);
+
+        balance -= amount;
+
+        System.out.println("Withdrawal successful");
+        System.out.println("Withdrawn amount: ₹" + amount);
+        System.out.println("Remaining balance: ₹" + balance);
+
+        transactions.add("Withdrawal: ₹" + amount
+                + " | Date & Time: " + getDateTime());
+    }
+
+    // Check withdrawal
+    public void checkWithdrawal(int amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("withdrawal amount must be greater then 0");
         }
-        if(amount %100!=0){
+        if (amount % 100 != 0) {
             throw new IllegalArgumentException("withdrawal amount must be  a multiple of 100");
         }
         if (amount > balance) {
             throw new ArithmeticException("insufficient  account balance");
         }
     }
-    //complete withdraw
-    public void completeWithdrawalAmount(int amount){
-        balance -= amount;
-        System.out.println("withdraw successful");
-        System.out.println("remaining balance:" + balance);
-        System.out.println("withdraw Amount:" + amount);
-        transactions.add("cash withdrawal" + amount
-                      +"|Date & Time:"+getDateTime());
-    }//change pin
+    //change pin
     public void changePin(int currentPin, int newPin) {
         if (currentPin != pin) {
-            System.out.println("incorrect pin");
+            System.out.println("Incorrect PIN");
+            return;
+        }
+        if (newPin < 1000 || newPin > 9999) {
+            System.out.println("PIN must contain exactly 4 digits");
             return;
         }
         pin = newPin;
-        System.out.println("pin changed successfully!"
-        +"|Date & Time:"+getDateTime());
-        transactions.add("pin sucessfully changed");
+        System.out.println("PIN changed successfully!");
+        transactions.add("PIN successfully changed"
+                + " | Date & Time: " + getDateTime());
     }
+
     //transactionhistory
     public void showTransactions() {
-        System.out.println("tansaction history");
+        System.out.println("Transaction History");
+
         if (transactions.isEmpty()) {
-            System.out.println("no transaction found");
+            System.out.println("No transactions found");
         } else {
             for (String transaction : transactions) {
                 System.out.println(transaction);
             }
         }
-    }//fund transfer
+    }
+
+    //fund transfer
     public void fundTransfer(long accountNumber, double amount) {
-        if(accountNumber<=0){
-            throw new IllegalArgumentException("invalid account");
+        if (accountNumber <= 0) {
+            throw new IllegalArgumentException(
+                    "Invalid account number");
         }
-        if(amount<=0){
-            throw new IllegalArgumentException("transfer amount must be greater then 0");
+
+        if (amount <= 0 || amount != Math.floor(amount)) {
+            throw new IllegalArgumentException(
+                    "Transfer amount must be a positive whole number");
         }
+
         if (amount > balance) {
-            throw new ArithmeticException("insufficient balance");
+            throw new ArithmeticException(
+                    "Insufficient balance");
         }
+
         balance = balance - amount;
-        transactions.add("transferred"+amount+"to account"+ accountNumber+"|Date & Time:"+getDateTime());
-        System.out.println("fund transfer succesful!");
-        System.out.println("remaining balance:" + balance);
-        System.out.println("transferred amount:" + amount);
+
+        transactions.add("Transferred ₹" + amount
+                + " to account " + accountNumber
+                + " | Date & Time: " + getDateTime());
+
+        System.out.println("Fund transfer successful!");
+        System.out.println("Remaining balance: ₹" + balance);
+        System.out.println("Transferred amount: ₹" + amount);
     }
 }
