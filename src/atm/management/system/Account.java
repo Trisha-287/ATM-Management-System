@@ -50,9 +50,7 @@ class Account {
     }// complete withdrwal
     public void completeWithdrawalAmount(int amount) {
         checkWithdrawal(amount);
-
         balance -= amount;
-
         System.out.println("Withdrawal successful");
         System.out.println("Withdrawn amount: ₹" + amount);
         System.out.println("Remaining balance: ₹" + balance);
@@ -60,7 +58,6 @@ class Account {
         transactions.add("Withdrawal: ₹" + amount
                 + " | Date & Time: " + getDateTime());
     }
-
     // Check withdrawal
     public void checkWithdrawal(int amount) {
         if (amount <= 0) {

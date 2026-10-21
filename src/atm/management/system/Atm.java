@@ -16,7 +16,7 @@ public class Atm {
         CashManager cashManager=new CashManager();
         // voive assistant
         VoiceAssistant voiceAssistant=new VoiceAssistant();
-        //voice commnd recognizer
+        //voice Commnd recognizer
         VoiceCommandRecognizer voiceCommandRecognizer=new VoiceCommandRecognizer(sc);
         System.out.println(" **********welcome to atm ********** ");
         System.out.println("date & time:"+ LocalDateTime.now().format(formatter));
@@ -24,8 +24,6 @@ public class Atm {
         if(console==null){
             System.out.println("secure pin input is not available") ;
             System.out.println("please run the program using a terminal");
-//            sc.close();
-//            return;
         }
         //pin login validation
         int attempts=0;

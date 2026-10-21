@@ -76,7 +76,7 @@ public class CashManager {
             if(depositedAmount<=0){
                 throw new IllegalArgumentException("please deposited at least one note");
             }
-            //Add notes to Atm
+            //add notes to Atm
             notes500=notes500+deposited500;
             notes200=notes200+deposited200;
             notes100=notes100+deposited100;
