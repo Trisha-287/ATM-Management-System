@@ -24,8 +24,7 @@ public class Atm {
         if(console==null){
             System.out.println("secure pin input is not available") ;
             System.out.println("please run the program using a terminal");
-        }
-        //pin login validation
+        }//pin login validation
         int attempts=0;
         boolean login=false;
         while(attempts<3){

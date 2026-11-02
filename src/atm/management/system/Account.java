@@ -17,7 +17,6 @@ class Account {
         this.pin = pin;
         this.balance = balance;
     }
-
     // Date and time
     public String getDateTime() {
         LocalDateTime now = LocalDateTime.now();
@@ -26,7 +25,6 @@ class Account {
 
         return now.format(formatter);
     }
-
     // Check balance
     public void checkBalance() {
         System.out.println("Balance amount is: " + balance);

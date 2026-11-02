@@ -12,8 +12,7 @@ public class VoiceCommandRecognizer {
         System.out.println("Enter command:");
         String command = sc.nextLine().toLowerCase().trim();
         if (command.contains("balance")) {
-            return "balance";
-        }
+            return "balance";}
         else if (command.contains("deposit")) {
             return "deposit";
         }

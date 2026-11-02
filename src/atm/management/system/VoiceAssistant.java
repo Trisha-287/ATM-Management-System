@@ -8,8 +8,7 @@ public class VoiceAssistant {
 
         public void say(String var1) {
             System.out.println("[VOICE]:" + var1);
-        }
-//Show transaction details
+        }//Show transaction details
         public void showInstructions() {
             System.out.println("atm instruction");
             System.out.println("withdraw-withdraw cash");
